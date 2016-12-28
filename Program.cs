@@ -6,11 +6,22 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace webAPI
 {
     public class Program
     {
+        public void Configure(IApplicationBuilder app)
+        {
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+            // Remove call to app.UseIISPlatformHandler(); 
+            // Remove call to app.UseForwardedHeaders(); 
+            // Both are handled by UseIISIntegration in Main.
+        }
         public static void Main(string[] args)
         {
             var config = new ConfigurationBuilder()
