@@ -1,4 +1,7 @@
 using StackExchange.Redis;
+using System.Collections.Generic;
+using System.Linq;
+using webAPI.Containers;
 
 namespace webAPI.Redis
 {
@@ -28,6 +31,19 @@ namespace webAPI.Redis
         public static double GetPercentage(string key, string id)
         {
             return (float)GetRank(key, id)/GetCount(key);
+        }
+        public static IEnumerable<Score> GetRange(string key)
+        {
+            IDatabase db = redis.GetDatabase();
+            return db.SortedSetScan(key).Select(entry => EntryToScore(entry,key));
+        }
+        static Score EntryToScore(SortedSetEntry entry, string key)
+        {
+            var score = new Score();
+            score.stage = key;
+            score.id = entry.Element;
+            score.score = (long)entry.Score;
+            return score;
         }
     }
 }

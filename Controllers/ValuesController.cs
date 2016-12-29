@@ -13,16 +13,22 @@ namespace webAPI.Controllers
     {
         // GET api/values
         [HttpGet]
-        public string Get()
+        public JsonResult Get()
         {
-            return RedisManager.GetCount("stage1").ToString();
+            return Json(RedisManager.GetRange("stage1"));
         }
 
-        // GET api/values/5
         [HttpGet("{id}")]
         public string Get(string id)
         {
             return RedisManager.GetPercentage("stage1",id).ToString();
+        }
+
+        // GET api/values/5
+        [HttpGet("{stage}.{id}")]
+        public string Get(string stage, string id)
+        {
+            return RedisManager.GetPercentage(stage,id).ToString();
         }
 
         // POST api/values
