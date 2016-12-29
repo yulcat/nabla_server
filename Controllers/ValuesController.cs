@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using webAPI.Containers;
+using webAPI.Redis;
 
 namespace webAPI.Controllers
 {
@@ -11,22 +13,24 @@ namespace webAPI.Controllers
     {
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public string Get()
         {
-            return new string[] { "value1", "value2", "value3" };
+            return RedisManager.GetCount("stage1").ToString();
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public string Get(string id)
         {
-            return "value";
+            return RedisManager.GetPercentage("stage1",id).ToString();
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public string Post(Score scoreData)
         {
+            RedisManager.AddScore(scoreData.stage, scoreData.id, scoreData.score);
+            return RedisManager.GetPercentage(scoreData.stage, scoreData.id).ToString();
         }
 
         // PUT api/values/5
