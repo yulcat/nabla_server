@@ -29,8 +29,15 @@ namespace webAPI.Controllers
         [HttpPost]
         public string Post(Score scoreData)
         {
-            RedisManager.AddScore(scoreData.stage, scoreData.id, scoreData.score);
-            return RedisManager.GetPercentage(scoreData.stage, scoreData.id).ToString();
+            try
+            {
+                RedisManager.AddScore(scoreData.stage, scoreData.id, scoreData.score);
+                return RedisManager.GetPercentage(scoreData.stage, scoreData.id).ToString();
+            }
+            catch(System.ArgumentException)
+            {
+                return Json(scoreData).ToString();
+            }
         }
 
         // PUT api/values/5
