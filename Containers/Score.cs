@@ -2,8 +2,8 @@ namespace webAPI.Containers
 {
     public class Score
     {
-        public string stage;
-        public string id;
-        public long score;
+        public string stage {get; set;}
+        public string id {get; set;}
+        public long score {get; set;}
     }
 }
