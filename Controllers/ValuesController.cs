@@ -18,13 +18,14 @@ namespace webAPI.Controllers
             return Json(RedisManager.GetRange("stage1"));
         }
 
+        // GET api/values/yulcat
         [HttpGet("{id}")]
         public string Get(string id)
         {
             return RedisManager.GetPercentage("stage1",id).ToString();
         }
 
-        // GET api/values/5
+        // GET api/values/stage1.yulcat
         [HttpGet("{stage}.{id}")]
         public string Get(string stage, string id)
         {
