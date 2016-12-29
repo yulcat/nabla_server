@@ -4,7 +4,7 @@ namespace webAPI.Redis
 {
     public class RedisManager
     {
-        static ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("localhost");
+        static ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("127.0.0.1");
         public static void AddScore(string key, string id, long score)
         {
             IDatabase db = redis.GetDatabase();
