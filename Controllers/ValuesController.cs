@@ -39,11 +39,16 @@ namespace webAPI.Controllers
             try
             {
                 RedisManager.AddScore(scoreData.stage, scoreData.id, scoreData.score);
-                return Json(RedisManager.GetPercentage(scoreData.stage, scoreData.id));
+                var result = new JsonResult(RedisManager.GetPercentage(scoreData.stage, scoreData.id));
+                result.StatusCode = Microsoft.AspNetCore.Http.StatusCodes.Status200OK;
+                return result;
             }
             catch(System.ArgumentException)
             {
-                return Json(scoreData);
+                var error = new JsonResult("ScoreData Argument not valid");
+                error.StatusCode = Microsoft.AspNetCore.Http.StatusCodes.Status400BadRequest;
+                HttpContext.Response.StatusCode = error.StatusCode.Value;
+                return new JsonResult(error);
             }
         }
 
